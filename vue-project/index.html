@@ -7,7 +7,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vite App</title>
   <style>
-    #app {
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    #slider img{
+      width: 50%;
+    height: 400px;
+      overflow: hidden;
+
+    }
+    #slider p{
+    font-size: 40px;
+    font-family: 'Courier New', Courier, monospace;
+    }
+    #slider ul li{
+      display: inline-block;
+	width: 14px;
+	height: 14px;
+	margin: 0 5px;
+	border-radius: 7px;
+	background-color: rgba(125, 125, 125, 0.8);
+	cursor: pointer;
+    }
+    .active{
+      background-color: black;
+    }
+    #app,#slider {
       text-align: center;
     }
 img{
@@ -15,31 +41,57 @@ img{
 }
     button{
       text-align: center;
-
+      width: 120px;
+      height: 40px;
+      background-color: aqua;
+      border: 0cap;
+      border-radius: 10%
     }
   </style>
 </head>
 
 <body>
+  <div id="slider">
+    <div class="slider-wrapper" >
+      <h1>轮播图</h1>
+      <img :src="getSrc()">
+      <ul>
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <p>{{getTitle()}}</p>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+  </div>
+  <!-- 点击图片的实现 -->
   <div id="app">
     <div v-if="i<5">
       
       <img :src="getSrc()" alt="" :title="getTitle()">
     </div>
     <div v-else >
-      <div v-for="item in slideShow">
+      <div v-for="item in hitShow">
 
         <img :src="item.src" alt="" :title="item.title" >
       </div>
     </div>
-    <button @click="getI" >0.0</button>
+    <button @click="getI" >点我操作！</button>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script >
+    // 点击按钮切换图片的vue内容
+
     const app = new Vue({
+     
       el: "#app",
      data: {
-        slideShow: [{ title: "minakami", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg" },
+        hitShow: [{ title: "minakami", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg" },
         { title: "liyue", src: '../images/101217413_p0.jpg' },
         { title: "hanfu", src: '../images/102106986_p1.png' },
         { title:'bike',src:'../images/102411430_p0.png'},
@@ -48,16 +100,52 @@ img{
         i:0
       },
       methods: {
+        
         getI(){
           this.i++
           
+        },
+        getSrc(){
+          return this.hitShow[this.i].src
+        },
+        getTitle(){
+          return this.hitShow[this.i].title
+        }
+      },
+    })
+    // 轮播图的内容
+    const slider = new Vue({
+      el:'#slider',
+      data:{
+        slideShow: [{ title: "这是水上麻衣，她很可爱", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg" },
+        { title: "花铭作者的作品", src: '../images/101217413_p0.jpg' },
+        { title: "huamingwink的作品", src: '../images/102106986_p1.png' },
+        { title:'还是他的作品',src:'../images/102411430_p0.png'},
+        {title:'还是还是',src:'../images/102879481_p0.png'}],
+        i : 0,
+        timer : ''
+      },
+      methods: 
+      {
+        timeAdder(){
+          clearInterval(this.timer)
+           this.timer = setInterval(()=>{
+            this.i++
+            if(this.i>4){
+              this.i = 0
+            }
+          },1000)
         },
         getSrc(){
           return this.slideShow[this.i].src
         },
         getTitle(){
           return this.slideShow[this.i].title
-        }
+        },
+        mounted() {
+          timeAdder()
+        },
+
       },
     })
   </script>
