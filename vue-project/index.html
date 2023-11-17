@@ -6,26 +6,62 @@
   <link rel="icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vite App</title>
+  <style>
+    #app {
+      text-align: center;
+    }
+img{
+  width: 50%;
+}
+    button{
+      text-align: center;
+
+    }
+  </style>
 </head>
 
 <body>
-  <div id="app"></div>
-  <script>
-    import vue from ('Vue')
+  <div id="app">
+    <div v-if="i<5">
+      
+      <img :src="getSrc()" alt="" :title="getTitle()">
+    </div>
+    <div v-else >
+      <div v-for="item in slideShow">
+
+        <img :src="item.src" alt="" :title="item.title" >
+      </div>
+    </div>
+    <button @click="getI" >0.0</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script >
     const app = new Vue({
       el: "#app",
-      data: {
+     data: {
         slideShow: [{ title: "minakami", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg" },
         { title: "liyue", src: '../images/101217413_p0.jpg' },
         { title: "hanfu", src: '../images/102106986_p1.png' },
-        { title }],
+        { title:'bike',src:'../images/102411430_p0.png'},
+        {title:'two girls',src:'../images/102879481_p0.png'}],
+         
+        i:0
       },
       methods: {
-
+        getI(){
+          this.i++
+          
+        },
+        getSrc(){
+          return this.slideShow[this.i].src
+        },
+        getTitle(){
+          return this.slideShow[this.i].title
+        }
       },
     })
   </script>
-  <script type="module" src="/src/main.js"></script>
+
 </body>
 
 </html>
