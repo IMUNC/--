@@ -12,14 +12,25 @@
       padding: 0;
     }
     #slider img{
-      width: 50%;
-    height: 400px;
+    height: 600px;
       overflow: hidden;
 
+    }
+    #slider{
+      text-align: center;
     }
     #slider p{
     font-size: 40px;
     font-family: 'Courier New', Courier, monospace;
+    }
+    .slider-wrapper{
+      width: 50%;
+    }
+    .active{
+      background-color: black;
+    }
+    .unactive{
+      background-color: rgb(110, 106, 106);
     }
     #slider ul li{
       display: inline-block;
@@ -27,16 +38,36 @@
 	height: 14px;
 	margin: 0 5px;
 	border-radius: 7px;
-	background-color: rgba(125, 125, 125, 0.8);
 	cursor: pointer;
     }
-    .active{
-      background-color: black;
-    }
+  
     #app,#slider {
       text-align: center;
     }
-img{
+    .icon{
+      background-color: rgb(86, 88, 90);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+position: relative;
+      top: 50%;
+
+      cursor: pointer;
+    }
+    .iconLeft{
+      float: left;
+    }
+    .iconRight{
+      float: right;
+    }
+    #slider img{
+      width: 100%;
+    }
+    #slider .icon img{
+      width: 100%;
+      height: 100%;
+    }
+#app img{
   width: 50%;
 }
     button{
@@ -46,24 +77,27 @@ img{
       background-color: aqua;
       border: 0cap;
       border-radius: 10%
+      
     }
   </style>
 </head>
 
 <body>
   <div id="slider">
-    <div class="slider-wrapper" >
+    <div class="slider-wrapper" @mouseover="stopChange()" @mouseleave="startChange()">
       <h1>轮播图</h1>
-      <img :src="getSrc()">
+      <img :src="getSrc()" >
+      <div class="icon iconLeft" @click="deleteI"><img src="../images/8666557_chevron_left_icon.png" alt=""></div>
+      <div class="icon iconRight" @click="plusI"><img src="../images/8666777_chevron_right_arrow_icon.png" alt=""></div>
+    </div>
       <ul>
-        <li class="active"></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
+       <li v-for="item in slideShow" 
+            :key="item.id"
+            @click="changeI(item.id)"
+            :class="(item.id === i)?'active':'unactive'"
+            ></li>
       </ul>
       <p>{{getTitle()}}</p>
-    </div>
     <br>
     <br>
     <br>
@@ -91,11 +125,11 @@ img{
      
       el: "#app",
      data: {
-        hitShow: [{ title: "minakami", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg" },
-        { title: "liyue", src: '../images/101217413_p0.jpg' },
-        { title: "hanfu", src: '../images/102106986_p1.png' },
-        { title:'bike',src:'../images/102411430_p0.png'},
-        {title:'two girls',src:'../images/102879481_p0.png'}],
+        hitShow: [{ title: "minakami", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg",id:0 },
+        { title: "liyue", src: '../images/101217413_p0.jpg',id:1 },
+        { title: "hanfu", src: '../images/102106986_p1.png',id:2 },
+        { title:'bike',src:'../images/102411430_p0.png',id:3},
+        {title:'two girls',src:'../images/102879481_p0.png',id:4}],
          
         i:0
       },
@@ -117,24 +151,49 @@ img{
     const slider = new Vue({
       el:'#slider',
       data:{
-        slideShow: [{ title: "这是水上麻衣，她很可爱", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg" },
-        { title: "花铭作者的作品", src: '../images/101217413_p0.jpg' },
-        { title: "huamingwink的作品", src: '../images/102106986_p1.png' },
-        { title:'还是他的作品',src:'../images/102411430_p0.png'},
-        {title:'还是还是',src:'../images/102879481_p0.png'}],
+        slideShow: [{ title: "这是水上麻衣，她很可爱", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg" ,id:0},
+        { title: "花铭作者的作品", src: '../images/101217413_p0.jpg',id:1 },
+        { title: "huamingwink的作品", src: '../images/102106986_p1.png',id:2 },
+        { title:'还是他的作品',src:'../images/102411430_p0.png',id:3},
+        {title:'还是还是',src:'../images/102879481_p0.png',id:4}],
         i : 0,
-        timer : ''
+        timer : null
       },
       methods: 
       {
+        mounted:function(){
+          this.timeAdder()
+        },
         timeAdder(){
           clearInterval(this.timer)
            this.timer = setInterval(()=>{
             this.i++
-            if(this.i>4){
+            if(this.i>this.slideShow.length-1){
               this.i = 0
             }
           },1000)
+        },
+        deleteI(){
+          this.i--
+          if(this.i<0){
+            this.i = this.slideShow.length-1
+          }
+        },
+        plusI(){
+          this.i++
+          if(this.i>this.slideShow.length-1){
+            this.i = 0 
+          }
+        },
+        stopChange(){
+          clearInterval(this.timer)
+        },
+        startChange(){
+          this.timeAdder()
+        },
+       
+        changeI(curreneIndex){
+          this.i=curreneIndex
         },
         getSrc(){
           return this.slideShow[this.i].src
@@ -142,9 +201,7 @@ img{
         getTitle(){
           return this.slideShow[this.i].title
         },
-        mounted() {
-          timeAdder()
-        },
+        
 
       },
     })
