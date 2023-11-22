@@ -7,91 +7,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vite App</title>
   <style>
-    * {
+    *{
       margin: 0;
       padding: 0;
     }
-
-    #slider img {
-      height: 600px;
+    #slider img{
+    height: 600px;
       overflow: hidden;
 
     }
-
-    #slider {
+    #slider{
       text-align: center;
     }
-
-    #slider p {
-      font-size: 40px;
-      font-family: 'Courier New', Courier, monospace;
+    #slider p{
+    font-size: 40px;
+    font-family: 'Courier New', Courier, monospace;
     }
-
-    .slider-wrapper {
+    .slider-wrapper{
       width: 50%;
     }
-
-    .active {
+    .active{
       background-color: black;
     }
-
-    .unactive {
+    .unactive{
       background-color: rgb(110, 106, 106);
     }
-
-    #slider ul li {
+    #slider ul li{
       display: inline-block;
-      width: 14px;
-      height: 14px;
-      margin: 0 5px;
-      border-radius: 7px;
-      cursor: pointer;
+	width: 14px;
+	height: 14px;
+	margin: 0 5px;
+	border-radius: 7px;
+	cursor: pointer;
     }
-
-    #app,
-    #slider {
+  
+    #app,#slider {
       text-align: center;
     }
-
-    .icon {
+    .icon{
       background-color: rgb(86, 88, 90);
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      position: relative;
+position: relative;
       top: 50%;
 
       cursor: pointer;
     }
-
-    .iconLeft {
+    .iconLeft{
       float: left;
     }
-
-    .iconRight {
+    .iconRight{
       float: right;
     }
-
-    #slider img {
+    #slider img{
       width: 100%;
     }
-
-    #slider .icon img {
+    #slider .icon img{
       width: 100%;
       height: 100%;
     }
-
-    #app img {
-      width: 50%;
-    }
-
-    button {
+#app img{
+  width: 50%;
+}
+    button{
       text-align: center;
       width: 120px;
       height: 40px;
       background-color: aqua;
       border: 0cap;
       border-radius: 10%
+      
     }
   </style>
 </head>
@@ -105,11 +91,14 @@
       <div class="icon iconLeft" @click="deleteI"><img src="../images/8666557_chevron_left_icon.png" alt=""></div>
       <div class="icon iconRight" @click="plusI"><img src="../images/8666777_chevron_right_arrow_icon.png" alt=""></div>
     </div>
-    <ul>
-      <li v-for="item in slideShow" :key="item.id" @click="changeI(item.id)"
-        :class="(item.id === i)?'active':'unactive'"></li>
-    </ul>
-    <p>{{getTitle()}}</p>
+      <ul>
+       <li v-for="item in slideShow" 
+            :key="item.id"
+            @click="changeI(item.id)"
+            :class="(item.id === i)?'active':'unactive'"
+            ></li>
+      </ul>
+      <p>{{getTitle()}}</p>
     <br>
     <br>
     <br>
@@ -118,102 +107,102 @@
   <!-- 点击图片的实现 -->
   <div id="app">
     <div v-if="i<5">
-
+      
       <img :src="getSrc()" alt="" :title="getTitle()">
     </div>
-    <div v-else>
+    <div v-else >
       <div v-for="item in hitShow">
 
-        <img :src="item.src" alt="" :title="item.title">
+        <img :src="item.src" alt="" :title="item.title" >
       </div>
     </div>
-    <button @click="getI">点我操作！</button>
+    <button @click="getI" >点我操作！</button>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script>
+  <script >
     // 点击按钮切换图片的vue内容
 
     const app = new Vue({
-
+     
       el: "#app",
-      data: {
-        hitShow: [{ title: "minakami", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg", id: 0 },
-        { title: "liyue", src: '../images/101217413_p0.jpg', id: 1 },
-        { title: "hanfu", src: '../images/102106986_p1.png', id: 2 },
-        { title: 'bike', src: '../images/102411430_p0.png', id: 3 },
-        { title: 'two girls', src: '../images/102879481_p0.png', id: 4 }],
-
-        i: 0
+     data: {
+        hitShow: [{ title: "minakami", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg",id:0 },
+        { title: "liyue", src: '../images/101217413_p0.jpg',id:1 },
+        { title: "hanfu", src: '../images/102106986_p1.png',id:2 },
+        { title:'bike',src:'../images/102411430_p0.png',id:3},
+        {title:'two girls',src:'../images/102879481_p0.png',id:4}],
+         
+        i:0
       },
       methods: {
-
-        getI() {
+        
+        getI(){
           this.i++
-
+          
         },
-        getSrc() {
+        getSrc(){
           return this.hitShow[this.i].src
         },
-        getTitle() {
+        getTitle(){
           return this.hitShow[this.i].title
         }
       },
     })
     // 轮播图的内容
     const slider = new Vue({
-      el: '#slider',
-      data: {
-        slideShow: [{ title: "这是水上麻衣，她很可爱", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg", id: 0 },
-        { title: "花铭作者的作品", src: '../images/101217413_p0.jpg', id: 1 },
-        { title: "huamingwink的作品", src: '../images/102106986_p1.png', id: 2 },
-        { title: '还是他的作品', src: '../images/102411430_p0.png', id: 3 },
-        { title: '还是还是', src: '../images/102879481_p0.png', id: 4 }],
-        i: 0,
-        timer: null
+      el:'#slider',
+      data:{
+        slideShow: [{ title: "这是水上麻衣，她很可爱", src: "../images/7698b4363e2ccf2ca60c63605eea9d7e9ffbf9c5_hq.jpg" ,id:0},
+        { title: "花铭作者的作品", src: '../images/101217413_p0.jpg',id:1 },
+        { title: "huamingwink的作品", src: '../images/102106986_p1.png',id:2 },
+        { title:'还是他的作品',src:'../images/102411430_p0.png',id:3},
+        {title:'还是还是',src:'../images/102879481_p0.png',id:4}],
+        i : 0,
+        timer : null
       },
-      methods:
+      methods: 
       {
-        mounted: function () {
+        mounted:function(){
           this.timeAdder()
         },
-        timeAdder() {
+        timeAdder(){
           clearInterval(this.timer)
-          this.timer = setInterval(() => {
+           this.timer = setInterval(()=>{
             this.i++
-            if (this.i > this.slideShow.length - 1) {
+            if(this.i>this.slideShow.length-1){
               this.i = 0
             }
-          }, 2500)
+          },2000)
         },
-        deleteI() {
+        deleteI(){
           this.i--
-          if (this.i < 0) {
-            this.i = this.slideShow.length - 1
+          if(this.i<0){
+            this.i = this.slideShow.length-1
           }
         },
-        plusI() {
+        plusI(){
           this.i++
-          if (this.i > this.slideShow.length - 1) {
-            this.i = 0
+          if(this.i>this.slideShow.length-1){
+            this.i = 0 
           }
         },
-        stopChange() {
+        stopChange(){
           clearInterval(this.timer)
         },
-        startChange() {
+        startChange(){
           this.timeAdder()
         },
-
-        changeI(curreneIndex) {
-          this.i = curreneIndex
+       
+        changeI(curreneIndex){
+          this.i=curreneIndex
         },
-        getSrc() {
+        getSrc(){
           return this.slideShow[this.i].src
         },
-        getTitle() {
+        getTitle(){
           return this.slideShow[this.i].title
         },
-
+        
 
       },
     })
